@@ -1,0 +1,11 @@
+- name: Verify
+  hosts: molecule
+  gather_facts: false
+  tasks:
+    - name: Verify playbook
+      ansible.builtin.debug:
+        msg: "This is a verify task."
+    - name: Verify ubuntu user
+      ansible.builtin.getent:
+        database: passwd
+        key: ubuntu

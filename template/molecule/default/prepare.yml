@@ -1,0 +1,14 @@
+- name: Prepare
+  hosts: molecule
+  gather_facts: false
+  tasks:
+    - name: Assert ubunut user does not exist
+      ansible.builtin.getent:
+        database: passwd
+        key: ubuntu
+        fail_key: false
+      register: ubuntu_user
+    - name: Fail if ubuntu user exists
+      ansible.builtin.fail:
+        msg: "The ubuntu user already exists."
+      when: ubuntu_user.ansible_facts.getent_passwd.ubuntu != None

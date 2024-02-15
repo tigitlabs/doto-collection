@@ -1,0 +1,19 @@
+---
+# tasks file for template
+- name: Task is running from within the role
+  ansible.builtin.debug:
+    msg: "This is a task from my_role."
+
+- name: Make sure ssh-client is installed
+  ansible.builtin.apt:
+    name: openssh-client
+    cache_valid_time: 3600
+    state: present
+- name: Add non-root user
+  ansible.builtin.user:
+    name: "ubuntu"
+    state: present
+    shell: /bin/bash
+    uid: 1000
+    create_home: true
+    generate_ssh_key: true
