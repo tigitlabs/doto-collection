@@ -1,0 +1,26 @@
+---
+# github_cli/tasks/main.yml
+
+- name: Install required packages
+  ansible.builtin.apt:
+    name:
+      - curl
+      - gpg-agent
+    state: present
+    cache_valid_time: 600
+
+- name: Add the GPG key for the GitHub CLI tool's package repository
+  ansible.builtin.apt_key:
+    url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+    keyring: /usr/share/keyrings/githubcli-archive-keyring.gpg
+
+- name: Add the GitHub CLI repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ ansible_architecture }} signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"
+    state: present
+
+- name: Install the GitHub CLI tool
+  ansible.builtin.apt:
+    name: gh
+    state: present
+    update_cache: yes

@@ -8,4 +8,4 @@ platforms:
     # image: geerlingguy/docker-ubuntu2204-ansible
     image: doto/ubuntu2204:latest
     pre_build_image: false
-    path: ../../../Docker
+    path: ../../../../Docker
