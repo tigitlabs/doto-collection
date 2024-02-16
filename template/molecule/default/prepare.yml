@@ -1,3 +1,4 @@
+---
 - name: Prepare
   hosts: molecule
   gather_facts: false
