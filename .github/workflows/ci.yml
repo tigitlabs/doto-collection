@@ -47,7 +47,7 @@ jobs:
 
       - name: Run Molecule tests.
         run: |
-          cd ./template
+          cd ./roles/template
           molecule test
         env:
           PY_COLORS: '1'
