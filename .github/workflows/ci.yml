@@ -45,10 +45,16 @@ jobs:
       - name: Install test dependencies.
         run: pip3 install ansible molecule molecule-plugins[docker] docker
 
-      - name: Run Molecule tests.
+      - name: Run molecule tests.
         run: |
-          cd ./roles/template
-          molecule test
+          for dir in $(find ./roles/* -maxdepth 0 -type d)
+          do
+            echo $PWD
+            pushd $dir
+            echo "Processing $dir"
+            molecule test
+            popd
+          done
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
