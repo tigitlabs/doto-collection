@@ -1,0 +1,26 @@
+---
+# vagrant/tasks/main.yml
+
+- name: Install required packages
+  ansible.builtin.apt:
+    name:
+      - curl
+      - gpg-agent
+    state: present
+    cache_valid_time: 600
+
+- name: Add the GPG key for HashiCorp
+  ansible.builtin.apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    keyring: /usr/share/keyrings/hashicorp-archive-keyring.gpg
+
+- name: Add the vagrant repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+    state: present
+
+- name: Install Vagrant
+  ansible.builtin.apt:
+    name: vagrant
+    state: present
+    update_cache: true
