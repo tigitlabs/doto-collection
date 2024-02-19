@@ -1,0 +1,13 @@
+---
+- name: Verify
+  hosts: molecule
+  gather_facts: false
+  tasks:
+    - name: Get vagrant version
+      ansible.builtin.shell: vagrant --version
+      register: vagrant_version
+    - name: Assert vagrant version
+      ansible.builtin.assert:
+        that: "'Vagrant' in vagrant_version.stdout"
+        fail_msg: "Vagrant installation failed"
+        success_msg: "{{ vagrant_version.stdout }}"
