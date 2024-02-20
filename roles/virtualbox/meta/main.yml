@@ -5,4 +5,4 @@ galaxy_info:
   author: Timur Yigit
   description: Install VirtualBox
   license: MIT
-  min_ansible_version: 2.1
+  min_ansible_version: "2.1"

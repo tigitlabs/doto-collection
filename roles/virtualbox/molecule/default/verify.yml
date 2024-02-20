@@ -1,13 +1,15 @@
 ---
 - name: Verify
-  hosts: molecule
+  hosts: vagrant-ubuntu2204
   gather_facts: false
+  vars_files:
+    - ../../defaults/main.yml
   tasks:
     - name: Verify VirtualBox version
-      ansible.builtin.shell: "VBoxManage --version"
-      register: vagrant_version
+      ansible.builtin.command: "VBoxManage --version"
+      register: vbox_version
     - name: Assert vagrant version
       ansible.builtin.assert:
-        that: "'Vagrant' in vagrant_version.stdout"
+        that: "vbox_version.stdout.split('.')[0:2] == virtualbox_version.split('.')"
         fail_msg: "Vagrant installation failed"
-        success_msg: "{{ vagrant_version.stdout }}"
+        success_msg: "{{ vbox_version.stdout }}"

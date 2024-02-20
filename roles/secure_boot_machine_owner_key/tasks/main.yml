@@ -18,6 +18,7 @@
 - name: Check Secure Boot state
   ansible.builtin.shell: "mokutil --sb-state"
   register: secure_boot
+  failed_when: false
 
 - name: Set secure boot to true if enabled
   set_fact:

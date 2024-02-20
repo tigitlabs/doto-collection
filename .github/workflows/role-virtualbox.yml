@@ -8,9 +8,13 @@ name: ci_virtualbox
       - '.github/workflows/**'
       - 'requirements.txt'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   molecule_virtualbox:
-    name: Molecule
+    name: Test virtualbox role
     runs-on: ubuntu-latest
 
     steps:
@@ -25,10 +29,10 @@ jobs:
       - name: Install test dependencies.
         run: pip3 install -r requirements.txt
 
-      - name: Run molecule tests.
+      - name: Run the role
         run: |
-          cd roles/virtualbox
-          molecule test
+          cd roles/virtualbox/tests
+          ansible-playbook -i inventory test.yml
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'

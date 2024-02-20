@@ -1,4 +1,15 @@
 ---
+- name: Lint
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: yamllint
+      delegate_to: localhost
+      ansible.builtin.command: yamllint .
+    - name: ansible-lint
+      delegate_to: localhost
+      ansible.builtin.command: ansible-lint .
+
 - name: Prepare
   hosts: molecule
   gather_facts: false

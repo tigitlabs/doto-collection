@@ -8,6 +8,10 @@ name: ci_github_cli
       - '.github/workflows/**'
       - 'requirements.txt'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   molecule_github_cli:
     name: Molecule

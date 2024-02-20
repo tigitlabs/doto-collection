@@ -6,6 +6,7 @@
     name:
       - curl
       - gpg-agent
+      - mokutil
     state: present
     cache_valid_time: 600
 
@@ -15,8 +16,10 @@
     msg: "The ansible_distribution_release variable is not defined, set gather_facts: true in your playbook."
 
 - name: Check if Secure Boot is enabled
-  ansible.builtin.shell: "mokutil --sb-state"
+  ansible.builtin.command: "mokutil --sb-state"
   register: secure_boot
+  failed_when: false
+  changed_when: false
 
 - name: Secure Boot is enabled
   ansible.builtin.fail:
@@ -34,8 +37,11 @@
 
 - name: Add the VirtualBox repository
   ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] https://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib"
-    state: present
+    repo: >
+      deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg]
+      https://download.virtualbox.org/virtualbox/debian
+      {{ ansible_distribution_release }} contrib
+        state: present
 
 - name: Install VirtualBox
   ansible.builtin.apt:
