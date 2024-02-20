@@ -18,6 +18,7 @@
 - name: Check Secure Boot state
   ansible.builtin.shell: "mokutil --sb-state"
   register: secure_boot
+  no_log: true
 
 - name: Set secure boot to true if enabled
   set_fact:
@@ -54,3 +55,17 @@
 - name: Generate MOK PEM key
   ansible.builtin.shell: openssl x509 -inform der -in {{ mok_path }}/MOK.der -out {{ mok_path }}/MOK.pem
   when: mok_key_exist == false
+
+- name: Check if MOK is enrolled
+  ansible.builtin.shell: "mokutil --test-key {{ mok_path }}/MOK.der"
+  register: mok_enrolled
+  failed_when: false
+
+- name: Set mok_enrolled_status based on the result
+  set_fact:
+    mok_enrolled_status: "{{ true if 'already enrolled' in mok_enrolled.stdout else false }}"
+
+- name: ⚠️ Import MOK key
+  ansible.builtin.debug:
+    msg: "⚠️ Import the MOK key with the following command: sudo mokutil --import {{ mok_path }}/MOK.der \n\n⚠️ Reboot the system and follow the instructions to enroll the MOK key."
+  when: mok_enrolled_status == false
