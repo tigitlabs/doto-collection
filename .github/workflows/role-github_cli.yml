@@ -1,18 +1,18 @@
 ---
-name: CI
+name: ci_github_cli
 'on':
   pull_request:
   push:
-    branches:
-      - master
-  schedule:
-    - cron: "0 7 * * 0"
+    paths:
+      - 'roles/github_cli/**'
+      - '.github/workflows/**'
+      - 'requirements.txt'
 
 jobs:
-
-  lint:
-    name: Lint
+  molecule_github_cli:
+    name: Molecule
     runs-on: ubuntu-latest
+
     steps:
       - name: Check out the codebase.
         uses: actions/checkout@v4
@@ -25,6 +25,10 @@ jobs:
       - name: Install test dependencies.
         run: pip3 install -r requirements.txt
 
-      - name: Lint code.
+      - name: Run molecule tests.
         run: |
-          yamllint .
+          cd roles/github_cli
+          molecule test
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
