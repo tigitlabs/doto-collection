@@ -1,0 +1,56 @@
+---
+# secure_boot_machine_owner_key/tasks/main.yml
+
+- name: Assert ansible_kernel label is set
+  ansible.builtin.assert:
+    that: ansible_kernel is defined
+    msg: "The ansible_kernel variable is not defined, set gather_facts: true in your playbook."
+  no_log: true
+
+- name: Install required packages
+  ansible.builtin.apt:
+    name:
+      - mokutil
+      - openssl
+    state: present
+    cache_valid_time: 600
+
+- name: Check Secure Boot state
+  ansible.builtin.shell: "mokutil --sb-state"
+  register: secure_boot
+
+- name: Set secure boot to true if enabled
+  set_fact:
+    secure_boot: "{{ 'true' if secure_boot.stdout.find('enabled') != -1 else 'false' }}"
+  no_log: true
+
+- name: Assert MOK key don't exist in
+  ansible.builtin.stat:
+    path: "{{ mok_path }}/{{ item }}"
+  loop:
+    - MOK.der
+    - MOK.priv
+  register: mok_key_state
+  no_log: true
+  when: secure_boot == true
+
+- name: Check if MOK key exist
+  set_fact:
+    mok_key_exist: "{{ (mok_key_state.results | map(attribute='stat.exists') | list) is all }}"
+  no_log: true
+  when: secure_boot == true
+
+- name: Create MOK key directory
+  ansible.builtin.file:
+    path: /var/lib/shim-signed/mok
+    state: directory
+  no_log: true
+  when: mok_key_exist == false
+
+- name: Generate MOK private key
+  ansible.builtin.shell: openssl req -nodes -new -x509 -newkey rsa:2048 -keyout {{ mok_path }}/MOK.priv -outform DER -out {{ mok_path }}/MOK.der -days 36500 -subj "/CN=My Name/"
+  when: mok_key_exist == false
+
+- name: Generate MOK PEM key
+  ansible.builtin.shell: openssl x509 -inform der -in {{ mok_path }}/MOK.der -out {{ mok_path }}/MOK.pem
+  when: mok_key_exist == false

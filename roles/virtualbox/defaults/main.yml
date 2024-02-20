@@ -1,0 +1,5 @@
+---
+# defaults file for virtualbox
+virtualbox_version: 7.0
+sign_module: true # Set to true if you want to sign the VirtualBox kernel modules
+
