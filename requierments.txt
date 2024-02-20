@@ -1,6 +1,4 @@
 ansible
 molecule
-molecule-docker
-molecule-vagrant
-molecule[lint]
-python-vagrant
+molecule-plugins[vagrant]
+molecule-plugins[docker]
