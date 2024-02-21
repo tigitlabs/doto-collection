@@ -5,7 +5,7 @@ name: ci_vagrant
   push:
     paths:
       - 'roles/vagrant/**'
-      - '.github/workflows/**'
+      - '.github/workflows/role-vagrant.yml'
       - 'requirements.txt'
 
 concurrency:

@@ -5,7 +5,7 @@ name: ci_secure_boot_machine_owner_key
   push:
     paths:
       - 'roles/secure_boot_machine_owner_key/**'
-      - '.github/workflows/**'
+      - '.github/workflows/role-secure_boot_machine_owner_key.yml'
       - 'requirements.txt'
 
 concurrency:

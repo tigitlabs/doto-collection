@@ -5,7 +5,7 @@ name: ci_virtualbox
   push:
     paths:
       - 'roles/virtualbox/**'
-      - '.github/workflows/**'
+      - '.github/workflows/role-virtualbox.yml'
       - 'requirements.txt'
 
 concurrency:
