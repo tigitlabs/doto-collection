@@ -2,15 +2,17 @@
 - hosts: localhost
   connection: local
   gather_facts: true
+  vars_files:
+    - ../../defaults/main.yml
   become: true
   roles:
     - virtualbox
   tasks:
     - name: Verify VirtualBox version
       ansible.builtin.command: "VBoxManage --version"
-      register: vagrant_version
+      register: vbox_version
     - name: Assert vagrant version
       ansible.builtin.assert:
-        that: "virtualbox_version.stdout.split('.')[0:2] == virtualbox_version"
+        that: "vbox_version.stdout.split('.')[0:2] == virtualbox_version.split('.')"
         fail_msg: "Vagrant installation failed"
-        success_msg: "{{ vagrant_version.stdout }}"
+        success_msg: "{{ vbox_version.stdout }}"
