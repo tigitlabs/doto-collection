@@ -1,0 +1,17 @@
+---
+
+dependency:
+  name: galaxy
+
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+
+platforms:
+  - name: vagrant-ubuntu2204
+    box: ubuntu/focal64
+
+provisioner:
+  name: ansible
+  log: true

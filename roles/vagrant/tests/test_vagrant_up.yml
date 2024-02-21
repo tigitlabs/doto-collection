@@ -1,0 +1,37 @@
+---
+- name: Install virtualbox and vagrant
+  hosts: all
+  gather_facts: true
+  become: true
+  roles:
+    - virtualbox
+    - vagrant
+
+- name: Run vagrant up
+  hosts: all
+  tasks:
+    - name: vagrant init
+      command: vagrant init --force ubuntu/focal64
+
+    - name: vagrant up
+      command: vagrant up
+      failed_when: false
+
+    - name: VBoxManage list vms
+      command: VBoxManage list vms
+      register: vbox_vms
+
+    - name: Assert VM was created
+      assert:
+        that: "'vagrant_default' in vbox_vms.stdout"
+        fail_msg: "VM was not created"
+        success_msg: "VM was created"
+
+    - name: Check if VM is running
+      command: vagrant global-status
+      register: vagrant_status
+      failed_when: false
+
+    - name: Vagrant global status
+      debug:
+        var: vagrant_status.stdout_lines
