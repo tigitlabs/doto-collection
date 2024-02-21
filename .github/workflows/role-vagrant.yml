@@ -8,8 +8,12 @@ name: ci_vagrant
       - '.github/workflows/**'
       - 'requirements.txt'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  molecule_vagrant:
+  molecule:
     name: Molecule
     runs-on: ubuntu-latest
 
