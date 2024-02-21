@@ -13,8 +13,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  molecule_virtualbox:
-    name: Test virtualbox role
+  molecule:
+    name: Molecule
     runs-on: ubuntu-latest
 
     steps:
