@@ -1,7 +1,9 @@
 ---
+# ⚠️ Don't run this locally, it's only for testing purposes
 - name: Install virtualbox and vagrant
-  hosts: all
+  hosts: localhost
   gather_facts: true
+  connection: local
   become: true
   roles:
     - virtualbox
@@ -23,7 +25,7 @@
 
     - name: Assert VM was created
       assert:
-        that: "'vagrant_default' in vbox_vms.stdout"
+        that: "'_default' in vbox_vms.stdout"
         fail_msg: "VM was not created"
         success_msg: "VM was created"
 

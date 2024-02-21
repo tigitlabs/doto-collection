@@ -55,8 +55,8 @@ jobs:
 
       - name: Run vagrant up.
         run: |
-          cd roles/vagrant
-          molecule test --scenario-name vagrant_up
+          cd roles/vagrant/tests
+          ansible-playbook test_vagrant_up.yml
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
