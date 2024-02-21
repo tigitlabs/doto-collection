@@ -1,6 +1,6 @@
 ---
 - name: Verify
-  hosts: molecule
+  hosts: all
   gather_facts: false
   tasks:
     - name: Get vagrant version

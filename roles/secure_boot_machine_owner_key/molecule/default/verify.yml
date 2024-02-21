@@ -1,13 +1,21 @@
 ---
 - name: Verify
-  hosts: molecule
+  hosts: all
   gather_facts: false
+  vars_files:
+    - ../../defaults/main.yml
   tasks:
-    - name: Verify VirtualBox version
-      ansible.builtin.shell: "VBoxManage --version"
-      register: vagrant_version
-    - name: Assert vagrant version
-      ansible.builtin.assert:
-        that: "'Vagrant' in vagrant_version.stdout"
-        fail_msg: "Vagrant installation failed"
-        success_msg: "{{ vagrant_version.stdout }}"
+    - name: Check if MOK keys are present
+      ansible.builtin.stat:
+        path: "{{ secure_boot_machine_owner_key_mok_path }}/{{ item }}"
+      register: result
+      loop:
+        - MOK.der
+        - MOK.priv
+        - MOK.pem
+
+    - name: Fail if MOK keys are not present
+      ansible.builtin.fail:
+        msg: "MOK key {{ item.item }} does not exist"
+      when: not item.stat.exists
+      loop: "{{ result.results }}"

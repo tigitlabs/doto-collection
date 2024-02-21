@@ -5,7 +5,7 @@ name: ci_github_cli
   push:
     paths:
       - 'roles/github_cli/**'
-      - '.github/workflows/**'
+      - '.github/workflows/role-github_cli.yml'
       - 'requirements.txt'
 
 concurrency:
@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  molecule_github_cli:
+  molecule:
     name: Molecule
     runs-on: ubuntu-latest
 

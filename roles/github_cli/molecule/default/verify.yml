@@ -1,10 +1,13 @@
 ---
 - name: Verify
-  hosts: molecule
+  hosts: all
   gather_facts: false
   tasks:
     - name: Verify github cli is installed
-      ansible.builtin.apt:
-        name: gh
-        state: present
-        update_cache: false
+      ansible.builtin.command: gh --version
+      register: gh_version
+
+    - name: Fail if github cli is not installed
+      ansible.builtin.fail:
+        msg: "GitHub CLI is not installed"
+      when: gh_version.rc != 0

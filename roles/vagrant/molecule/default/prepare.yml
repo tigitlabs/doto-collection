@@ -1,17 +1,16 @@
 ---
 - name: Lint
-  hosts: all
+  hosts: localhost
+  connection: local
   gather_facts: false
   tasks:
     - name: yamllint
-      delegate_to: localhost
-      ansible.builtin.command: yamllint .
+      ansible.builtin.command: yamllint ../..
     - name: ansible-lint
-      delegate_to: localhost
-      ansible.builtin.command: ansible-lint .
+      ansible.builtin.command: ansible-lint ../..
 
 - name: Prepare
-  hosts: molecule
+  hosts: all
   gather_facts: false
   tasks:
     - name: Prepare playbook
