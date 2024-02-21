@@ -1,0 +1,17 @@
+---
+- name: Lint
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: yamllint
+      ansible.builtin.command: yamllint ../../
+    - name: ansible-lint
+      ansible.builtin.command: ansible-lint ../../
+
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Prepare playbook
+      ansible.builtin.meta: noop
