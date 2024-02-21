@@ -1,0 +1,7 @@
+---
+
+- name: Converge
+  hosts: vagrant-ubuntu2204
+  become: true
+  roles:
+    - role: virtualbox

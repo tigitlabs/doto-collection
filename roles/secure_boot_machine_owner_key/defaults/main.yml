@@ -1,0 +1,3 @@
+---
+# defaults file for secure_boot_machine_owner_key
+mok_path: /var/lib/shim-signed/mok

@@ -1,0 +1,50 @@
+---
+# virtualbox/tasks/main.yml
+
+- name: Install required packages
+  ansible.builtin.apt:
+    name:
+      - curl
+      - gpg-agent
+      - mokutil
+    state: present
+    cache_valid_time: 600
+
+- name: Assert distribution label is set
+  ansible.builtin.assert:
+    that: ansible_distribution_release is defined
+    msg: "The ansible_distribution_release variable is not defined, set gather_facts: true in your playbook."
+
+- name: Check if Secure Boot is enabled
+  ansible.builtin.command: "mokutil --sb-state"
+  register: secure_boot
+  failed_when: false
+  changed_when: false
+
+- name: Secure Boot is enabled
+  ansible.builtin.fail:
+    msg: "Secure Boot is enabled, disable it in the BIOS settings"
+  when: secure_boot.stdout.find("enabled") != -1
+
+- name: Role variables
+  ansible.builtin.debug:
+    msg: "virtualbox_version: {{ virtualbox_version }}"
+
+- name: Add the GPG Oracle key
+  ansible.builtin.apt_key:
+    url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
+    keyring: /usr/share/keyrings/oracle-virtualbox-2016.gpg
+
+- name: Add the VirtualBox repository
+  ansible.builtin.apt_repository:
+    repo: >
+      deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg]
+      https://download.virtualbox.org/virtualbox/debian
+      {{ ansible_distribution_release }} contrib
+        state: present
+
+- name: Install VirtualBox
+  ansible.builtin.apt:
+    name: virtualbox-{{ virtualbox_version }}
+    state: present
+    update_cache: true
