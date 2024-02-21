@@ -1,11 +1,14 @@
 ---
 dependency:
   name: galaxy
-  options:
-    requirements-file: requirements.yml
+
+driver:
+  name: docker
+
 platforms:
-  - name: molecule-ubuntu
-    # image: geerlingguy/docker-ubuntu2204-ansible
-    image: doto/ubuntu2204:latest
-    pre_build_image: false
-    path: ../../../../Docker
+  - name: ubuntu2204
+    image: ubuntu:22.04
+
+provisioner:
+  name: ansible
+  log: true

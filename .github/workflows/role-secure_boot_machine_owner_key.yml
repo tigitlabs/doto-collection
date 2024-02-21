@@ -1,10 +1,10 @@
 ---
-name: ci_virtualbox
+name: ci_secure_boot_machine_owner_key
 'on':
   pull_request:
   push:
     paths:
-      - 'roles/virtualbox/**'
+      - 'roles/secure_boot_machine_owner_key/**'
       - '.github/workflows/**'
       - 'requirements.txt'
 
@@ -29,10 +29,10 @@ jobs:
       - name: Install test dependencies.
         run: pip3 install -r requirements.txt
 
-      - name: Run the role
+      - name: Run molecule tests.
         run: |
-          cd roles/virtualbox/tests
-          ansible-playbook -i inventory test.yml
+          cd roles/secure_boot_machine_owner_key
+          molecule test
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'

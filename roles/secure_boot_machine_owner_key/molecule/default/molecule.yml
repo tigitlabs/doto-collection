@@ -1,26 +1,14 @@
 ---
 dependency:
   name: galaxy
-  options:
-    requirements-file: requirements.yml
+
 driver:
-  name: vagrant
-  provider:
-    name: virtualbox
-  options:
-    ansible_connection: ssh
+  name: docker
 
 platforms:
-  - name: vagrant-ubuntu2204
-    box: ubuntu/focal64
-    instance_raw_config_args:
-      - "vm.network 'forwarded_port', guest: 80, host: 1234"
+  - name: ubuntu2204
+    image: ubuntu:22.04
 
 provisioner:
   name: ansible
   log: true
-  config_options:
-    defaults:
-      private_key_file: /home/runner/.ssh/id_rsa
-      host_key_checking: false
-      force_handlers: true
