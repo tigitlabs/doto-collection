@@ -7,7 +7,7 @@
       - curl
       - gpg-agent
     state: present
-    cache_valid_time: 600
+    update_cache: true
 
 - name: Add the GPG key for HashiCorp
   ansible.builtin.apt_key:
@@ -21,6 +21,6 @@
 
 - name: Install Vagrant
   ansible.builtin.apt:
-    name: vagrant
+    name: "vagrant={{ vagrant_version }}"
     state: present
     update_cache: true

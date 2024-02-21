@@ -1,4 +1,4 @@
 ---
 # defaults file for virtualbox
-virtualbox_version: "6.1"  # This is the latest version supported by Vagrant as of 2024-02-20
-sign_module: true  # Set to true if you want to sign the VirtualBox kernel modules
+virtualbox_version: "7.0" # This is the latest version supported by Vagrant as of 2024-02-20
+sign_module: true # Set to true if you want to sign the VirtualBox kernel modules

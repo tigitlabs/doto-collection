@@ -1,6 +1,6 @@
 ---
 - name: Verify
-  hosts: vagrant-ubuntu2204
+  hosts: all
   gather_facts: false
   vars_files:
     - ../../defaults/main.yml
