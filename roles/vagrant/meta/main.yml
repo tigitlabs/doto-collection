@@ -2,7 +2,7 @@
 galaxy_info:
   role_name: vagrant
   namespace: tigitlabs
-  author: your name
+  author: Timur Yigit
   description: Install Vagrant
   license: MIT
-  min_ansible_version: 2.1
+  min_ansible_version: "2.1"

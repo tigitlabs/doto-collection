@@ -1,8 +1,8 @@
 ---
 galaxy_info:
-  role_name: github_cli
-  description: This role installs the GitHub CLI.
+  role_name: virtualbox
   namespace: tigitlabs
   author: Timur Yigit
+  description: Install VirtualBox
   license: MIT
   min_ansible_version: "2.1"
