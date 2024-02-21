@@ -10,7 +10,9 @@
     - vagrant
 
 - name: Run vagrant up
-  hosts: all
+  hosts: localhost
+  gather_facts: true
+  connection: local
   tasks:
     - name: vagrant init
       command: vagrant init --force ubuntu/focal64
