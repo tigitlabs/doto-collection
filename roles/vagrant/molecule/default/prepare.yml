@@ -5,9 +5,9 @@
   gather_facts: false
   tasks:
     - name: yamllint
-      ansible.builtin.command: yamllint .
+      ansible.builtin.command: yamllint ../..
     - name: ansible-lint
-      ansible.builtin.command: ansible-lint .
+      ansible.builtin.command: ansible-lint ../..
 
 - name: Prepare
   hosts: all

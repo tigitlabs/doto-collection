@@ -1,0 +1,41 @@
+---
+# ⚠️ Don't run this locally, it's only for testing purposes
+- name: Install virtualbox and vagrant
+  hosts: localhost
+  gather_facts: true
+  connection: local
+  become: true
+  roles:
+    - virtualbox
+    - vagrant
+
+- name: Run vagrant up
+  hosts: localhost
+  gather_facts: true
+  connection: local
+  tasks:
+    - name: vagrant init
+      command: vagrant init --force ubuntu/focal64
+
+    - name: vagrant up
+      command: vagrant up
+      failed_when: false
+
+    - name: VBoxManage list vms
+      command: VBoxManage list vms
+      register: vbox_vms
+
+    - name: Assert VM was created
+      assert:
+        that: "'_default' in vbox_vms.stdout"
+        fail_msg: "VM was not created"
+        success_msg: "VM was created"
+
+    - name: Check if VM is running
+      command: vagrant global-status
+      register: vagrant_status
+      failed_when: false
+
+    - name: Vagrant global status
+      debug:
+        var: vagrant_status.stdout_lines
