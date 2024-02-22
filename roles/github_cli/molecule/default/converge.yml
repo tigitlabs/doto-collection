@@ -2,5 +2,10 @@
 
 - name: Converge
   hosts: all
+  become: true
   roles:
     - role: github_cli
+  pre_tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
