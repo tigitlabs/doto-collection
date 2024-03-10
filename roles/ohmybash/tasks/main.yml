@@ -1,0 +1,41 @@
+---
+# tasks file for roles/ohmybash
+- name: "Ohmybash | Detect oh-my-bash"
+  ansible.builtin.stat:
+    path: "{{ ansible_user_dir }}/.oh-my-bash"
+  register: ohmybash
+
+- name: "Ohmybash | Register oh-my-bash state"
+  ansible.builtin.set_fact:
+    ohmybash_is_installed: "{{ ohmybash.stat.exists }}"
+
+- name: "Ohmybash | Debug ohmybash_is_installed"
+  ansible.builtin.debug:
+    var: ohmybash_is_installed
+
+- name: "Ohmybash | Install oh-my-bash"
+  when: not ohmybash_is_installed
+  block:
+    - name: "Ohmybash | Install dependencies"
+      ansible.builtin.apt:
+        name:
+          - git
+        state: present
+        update_cache: true
+    - name: "Ohmybash | Download oh-my-bash Install Script"
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh
+        dest: /tmp/oh-my-bash.install.sh
+        force: true
+        mode: "0755"
+
+    - name: "Ohmybash | Run oh-my-bash Install Script"
+      ansible.builtin.command: /tmp/oh-my-bash.install.sh --unattended
+      changed_when: false
+
+- name: "Ohmybash | Copy .bashrc"
+  ansible.builtin.template:
+    src: templates/osh-template.j2
+    dest: "{{ ansible_user_dir }}/.bashrc"
+    force: true
+    mode: "0644"

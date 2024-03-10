@@ -1,0 +1,14 @@
+---
+dependency:
+  name: galaxy
+
+driver:
+  name: docker
+
+platforms:
+  - name: ubuntu2204
+    image: ubuntu:22.04
+
+provisioner:
+  name: ansible
+  log: true
