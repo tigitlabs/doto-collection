@@ -1,5 +1,5 @@
 ---
-name: ci_github_cli
+name: ci_ohmybash
 'on':
   pull_request:
   push:
