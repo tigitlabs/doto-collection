@@ -2,6 +2,22 @@
 
 Ansible roles collection for doto
 
+## Development
+
+### Environment
+
+`source setup.sh`
+
+### Add a new role
+
+```bash
+ansible-galaxy role init roles/<name>
+mkdir roles/<name>/molecule
+cd roles/<name>/molecule
+molecule init scenario
+```
+
+
 ## Molecule
 
 <https://github.com/ansible-community/molecule-plugins>
