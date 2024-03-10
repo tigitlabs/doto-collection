@@ -9,6 +9,16 @@
     state: present
     cache_valid_time: 600
 
+- name: Get DEB architecture
+  ansible.builtin.command: "dpkg --print-architecture"
+  register: deb_architecture
+  failed_when: deb_architecture.rc != 0
+  changed_when: false
+
+- name: Print DEB architecture
+  ansible.builtin.debug:
+    msg: "deb_architecture: {{ deb_architecture.stdout }}"
+
 - name: Add the GPG key for the GitHub CLI tool's package repository
   ansible.builtin.apt_key:
     url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
@@ -16,7 +26,7 @@
 
 - name: Add the GitHub CLI repository
   ansible.builtin.apt_repository:
-    repo: "deb [arch={{ ansible_architecture }} signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"
+    repo: "deb [arch={{ deb_architecture.stdout }} signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"
     state: present
 
 - name: Install the GitHub CLI tool
