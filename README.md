@@ -17,7 +17,6 @@ cd roles/<name>/molecule
 molecule init scenario
 ```
 
-
 ## Molecule
 
 <https://github.com/ansible-community/molecule-plugins>
