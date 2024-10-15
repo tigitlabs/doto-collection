@@ -1,0 +1,54 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+{
+  "name": "doto-collection",
+  "build": {
+    "dockerfile": "./Dockerfile",
+    "context": "."
+  },
+  "initializeCommand": ".devcontainer/initializeCommand.sh",
+  "postCreateCommand": ".devcontainer/postCreateCommand.sh",
+  "postStartCommand": ".devcontainer/postStartCommand.sh",
+  "onCreateCommand": "npm install -g @devcontainers/cli",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": "true",
+      "username": "vscode",
+      "userUid": "1000",
+      "userGid": "1000",
+      "upgradePackages": "true"
+    },
+    "ghcr.io/devcontainers/features/sshd:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "moby": "false",
+      "installDockerBuildx": true,
+      "version": "latest",
+      "dockerDashComposeVersion": "v2"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "installDirectlyFromGitHubRelease": true,
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers-contrib/features/act:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers-contrib/features/actionlint:1": {
+      "version": "latest"
+    },
+    // This is needed to install the devcontainer-cli
+    "ghcr.io/devcontainers/features/node:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "mutantdino.resourcemonitor",
+        "DavidAnson.vscode-markdownlint",
+        "ms-python.python",
+        "ms-python.black-formatter"
+      ]
+    }
+  },
+  "remoteUser": "vscode",
+  "updateRemoteUserUID": true
+}
